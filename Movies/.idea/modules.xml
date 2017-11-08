@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Movies.iml" filepath="$PROJECT_DIR$/Movies.iml" />
+      <module fileurl="file://E:\MyApps\Movies\mmoviez\app.iml" filepath="E:\MyApps\Movies\mmoviez\app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mmoviez/mmoviez.iml" filepath="$PROJECT_DIR$/mmoviez/mmoviez.iml" />
+    </modules>
+  </component>
+</project>
