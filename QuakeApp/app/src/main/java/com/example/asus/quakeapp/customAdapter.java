@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -49,12 +50,22 @@ public class customAdapter extends BaseAdapter{
         TextView textView3=(TextView)view.findViewById(R.id.place2);
         TextView textView4=(TextView)view.findViewById(R.id.date);
         TextView textView5=(TextView)view.findViewById(R.id.time);
+        ImageView imageView=(ImageView)view.findViewById(R.id.redalert);
         GradientDrawable magnitudeCircle = (GradientDrawable) textView1.getBackground();
         String magnitude=earthquakelist.get(i).getMagnitude();
         String place1=earthquakelist.get(i).getPlace1();
         String place2=earthquakelist.get(i).getPlace2();
         String date=earthquakelist.get(i).getDate();
         String time=earthquakelist.get(i).getTime();
+        if (Double.parseDouble(magnitude)<5){
+            imageView.setImageResource(R.drawable.med);
+        }
+        else if(Double.parseDouble(magnitude)>=5 && Double.parseDouble(magnitude)<6.5){
+            imageView.setImageResource(R.drawable.medhigh);
+        }
+        else if (Double.parseDouble(magnitude)>=6.5){
+            imageView.setImageResource(R.drawable.alert);
+        }
         int magnitudeColor=Functions.getMagnitudeColor(Double.parseDouble(magnitude),context);
         magnitudeCircle.setColor(magnitudeColor);
         textView1.setText(magnitude);

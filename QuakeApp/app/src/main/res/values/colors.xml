@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="magnitude1">#4A7BA7</color>
-
+    <color name="splash">#d11905</color>
     <!-- Magnitude circle color for an earthquake with magnitude between 2 and 3 -->
     <color name="magnitude2">#04B4B3</color>
 
@@ -36,5 +36,7 @@
 
     <!-- Text color for the primary location of the earthquake in the list item -->
     <color name="textColorEarthquakeLocation">#2B3D4D</color>
+
+    <color name="black_overlay">#66000000</color>
 
 </resources>

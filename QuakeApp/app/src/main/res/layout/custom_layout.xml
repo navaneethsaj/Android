@@ -64,4 +64,11 @@
             android:textColor="@color/textColorEarthquakeDetails"
             android:textSize="12sp"/>
     </LinearLayout>
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:paddingLeft="2dp"
+        android:id="@+id/redalert"
+        android:layout_gravity="right"
+        android:src="@drawable/low"/>
 </LinearLayout>
