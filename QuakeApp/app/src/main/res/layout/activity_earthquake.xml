@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="3dp"
     android:orientation="vertical"
-    tools:context="com.example.asus.quakeapp.EarthquakeActivity">
+    tools:context="com.example.asus.myquakeapp.EarthquakeActivity">
     <TextView
         android:id="@+id/fetching"
         android:layout_width="match_parent"

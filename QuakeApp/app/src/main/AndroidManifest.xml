@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.asus.quakeapp">
+    package="com.example.asus.myquakeapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -11,16 +11,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EarthquakeActivity"></activity>
-        <activity android:name=".WebActivity" />
-        <activity android:name=".SplashScreen">
+        <activity android:name="com.example.asus.myquakeapp.EarthquakeActivity"></activity>
+        <activity android:name="com.example.asus.myquakeapp.WebActivity" />
+        <activity android:name="com.example.asus.myquakeapp.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Exit"></activity>
+        <activity android:name="com.example.asus.myquakeapp.Exit"></activity>
     </application>
 
 </manifest>
