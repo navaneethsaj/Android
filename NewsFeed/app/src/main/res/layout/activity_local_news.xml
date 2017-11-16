@@ -11,6 +11,14 @@
         android:layout_height="50dp"
         android:orientation="horizontal">
 
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/settings"
+            android:onClick="gotomenu"/>
         <TextView
             android:id="@+id/text"
             android:layout_width="wrap_content"
@@ -23,11 +31,13 @@
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
             android:textColor="#000000"
             android:textSize="30sp" />
+
         <ImageView
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
+            android:layout_marginEnd="6dp"
             android:onClick="refresh"
             android:src="@drawable/sync" />
     </RelativeLayout>

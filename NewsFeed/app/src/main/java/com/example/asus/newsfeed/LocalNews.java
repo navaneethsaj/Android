@@ -107,6 +107,11 @@ public class LocalNews extends AppCompatActivity {
         asyncTask.execute(worldurl+"&source="+sourcelist.get(index).toString());
     }
 
+    public void gotomenu(View view) {
+        Intent intent=new Intent(getApplicationContext(),MenuActivity.class);
+        startActivity(intent);
+    }
+
     public class getSourcesAsyncTask extends AsyncTask<String, Void, ArrayList<NewsObject>> {
 
         @Override

@@ -44,13 +44,6 @@ public class Country_selector extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void italy(View view) {
-        editor.putString(KeyValue.MY_COUNTRY,"ITALY");
-        editor.commit();
-        Intent intent=new Intent(getApplicationContext(),Country_News.class);
-        startActivity(intent);
-    }
-
     public void uk(View view) {
         editor.putString(KeyValue.MY_COUNTRY,"UK");
         editor.commit();
