@@ -10,9 +10,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +37,8 @@ public class LocalNews extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     TextView textView;
     String countrycode;
+    SearchView searchView;
+    ImageView refeshbutton;
     String jsonsourcelist;
     CacheContent newsCache;
     StringBuilder stringBuilder=new StringBuilder();
@@ -49,8 +56,10 @@ public class LocalNews extends AppCompatActivity {
         setContentView(R.layout.activity_local_news);
         sharedPreferences=getSharedPreferences(KeyValue.MY_PREF,MODE_PRIVATE);
         progressBar=(ProgressBar)findViewById(R.id.loading);
+        refeshbutton=(ImageView)findViewById(R.id.refresh);
         textView=(TextView)findViewById(R.id.text);
         listView=(ListView)findViewById(R.id.listview);
+        searchView=(SearchView)findViewById(R.id.search_bar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
         swipeRefreshLayout=(SwipeRefreshLayout)findViewById(R.id.swipelayout);
@@ -103,9 +112,33 @@ public class LocalNews extends AppCompatActivity {
             }
         });
 
+        searchView.setQueryHint("Search");
+        searchView.setSubmitButtonEnabled(true);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                //Toast.makeText(getApplicationContext(),s,Toast.LENGTH_SHORT).show();
+                getSourcesAsyncTask asyncTask=new getSourcesAsyncTask();
+                asyncTask.execute(KeyValue.QUERY_URL+"&q="+s);
+                swipeRefreshLayout.setRefreshing(true);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                //Toast.makeText(getApplicationContext(),s,Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                RotateAnimation anim = new RotateAnimation(0.0f, 360.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                anim.setInterpolator(new LinearInterpolator());
+                anim.setRepeatCount(Animation.INFINITE);
+                anim.setDuration(700);
+                refeshbutton.startAnimation(anim);
                 sourcelist=Utils.getNewsSourceOfCountry(countrycode,jsonsourcelist);
                 stringBuilder=new StringBuilder();
                 stringBuilder.append("&sources=");
@@ -123,6 +156,11 @@ public class LocalNews extends AppCompatActivity {
 
     public void refresh(View view) {
         swipeRefreshLayout.setRefreshing(true);
+        RotateAnimation anim = new RotateAnimation(0.0f, 360.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        anim.setInterpolator(new LinearInterpolator());
+        anim.setRepeatCount(Animation.INFINITE);
+        anim.setDuration(700);
+        refeshbutton.startAnimation(anim);
         sourcelist=Utils.getNewsSourceOfCountry(countrycode,jsonsourcelist);
         stringBuilder=new StringBuilder();
         stringBuilder.append("&sources=");
@@ -161,6 +199,7 @@ public class LocalNews extends AppCompatActivity {
             //Toast.makeText(getApplicationContext(),jsonresponse,Toast.LENGTH_SHORT).show();
             Log.d("Onpostexecute : ","OK");
             progressBar.setVisibility(View.GONE);
+            refeshbutton.setAnimation(null);
             if (newslist.size() == 0) {
                 //textView.setText("No Local Content Available");
             } else {

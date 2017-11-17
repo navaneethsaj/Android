@@ -25,7 +25,7 @@ public class SplashScreen extends AppCompatActivity {
                 @Override
                 public void run() {
                     if (sharedPreferences.getString(KeyValue.REGION, "").equals("")) {
-                        Intent intent = new Intent(getApplicationContext(), LocalOrGlobal.class);
+                        Intent intent = new Intent(getApplicationContext(), Country_selector.class);
                         startActivity(intent);
                     } else if (sharedPreferences.getString(KeyValue.REGION, "").equals("local") == true) {
                         if (sharedPreferences.getString(KeyValue.MY_COUNTRY,"").equals("")){
