@@ -9,6 +9,9 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -76,7 +79,18 @@ public class NewsAdapter extends BaseAdapter {
         textView4.setText(desc);
         textView5.setText(source_name);
         textView7.setText(published);
-        imageView.setImageBitmap(bitmap);
+        if (bitmap!=null) {
+            imageView.setImageBitmap(bitmap);
+        }
+        else {
+            imageView.setScaleType(ImageView.ScaleType.CENTER);
+            imageView.setImageResource(R.drawable.newsimagepholder);
+            RotateAnimation anim = new RotateAnimation(0.0f, 360.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            anim.setInterpolator(new LinearInterpolator());
+            anim.setRepeatCount(Animation.INFINITE);
+            anim.setDuration(700);
+            imageView.startAnimation(anim);
+        }
         return view;
     }
 

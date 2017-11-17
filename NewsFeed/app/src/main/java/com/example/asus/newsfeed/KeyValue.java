@@ -12,4 +12,5 @@ public class KeyValue {
     public static String MY_COUNTRY="country";
     public static String SOURCE_JSONRESPONSE="sourcejsonresponse";
     public static String[] sources={"bbc-news","cnn","independent","the-economist","usa-today","the-hindu","google-news"};
+    public static String IS_CACHED="iscached";
 }

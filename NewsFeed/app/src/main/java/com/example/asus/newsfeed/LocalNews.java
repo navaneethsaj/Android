@@ -1,5 +1,6 @@
 package com.example.asus.newsfeed;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -15,6 +16,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,6 +33,7 @@ public class LocalNews extends AppCompatActivity {
     TextView textView;
     String countrycode;
     String jsonsourcelist;
+    CacheContent newsCache;
     StringBuilder stringBuilder=new StringBuilder();
     ProgressBar progressBar;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -38,13 +47,39 @@ public class LocalNews extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_local_news);
+        sharedPreferences=getSharedPreferences(KeyValue.MY_PREF,MODE_PRIVATE);
         progressBar=(ProgressBar)findViewById(R.id.loading);
         textView=(TextView)findViewById(R.id.text);
         listView=(ListView)findViewById(R.id.listview);
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
         swipeRefreshLayout=(SwipeRefreshLayout)findViewById(R.id.swipelayout);
-        sharedPreferences=getSharedPreferences(KeyValue.MY_PREF,MODE_PRIVATE);
+        if (sharedPreferences.getString(KeyValue.IS_CACHED,"").equals("true")){
+            Toast.makeText(this,"true_entered",Toast.LENGTH_SHORT).show();
+            try {
+                Log.d("try start", " ok");
+                FileInputStream fileInputStream=new FileInputStream(new File(getApplicationContext().getFilesDir(),"cache.txt"));
+                Log.d("FileInputstrm "," ok");
+                ObjectInputStream objectInputStream=new ObjectInputStream(fileInputStream);
+                Log.d("ObjectInputstrm "," Ok");
+                newsCache=(CacheContent)objectInputStream.readObject();
+                Log.d("Newscache "," OK");
+                newslist=newsCache.getNewsObjectArrayListCache();
+                Log.d("news list "," ok");
+                NewsAdapter newsAdapter=new NewsAdapter(getApplicationContext(),newslist);
+                listView.setAdapter(newsAdapter);
+                progressBar.setVisibility(View.GONE);
+                swipeRefreshLayout.setRefreshing(true);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
+        }
+
         jsonsourcelist=sharedPreferences.getString(KeyValue.SOURCE_JSONRESPONSE,"");
         String country=sharedPreferences.getString(KeyValue.MY_COUNTRY,"");
         countrycode=Utils.getcountryCode(country);
@@ -138,4 +173,44 @@ public class LocalNews extends AppCompatActivity {
             }
         }
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        newsCache=new CacheContent(newslist);
+        try {
+            Log.d("FileOutputStarted "," OK");
+            FileOutputStream fos = new FileOutputStream(new File(getApplicationContext().getFilesDir(),"cache.txt"));
+            ObjectOutputStream os = new ObjectOutputStream(fos);
+            os.writeObject(newsCache);
+            os.close();
+            fos.close();
+            Log.d("FIleOutputFinished "," OK");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        sharedPreferences=getSharedPreferences(KeyValue.MY_PREF,MODE_PRIVATE);
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        editor.putString(KeyValue.IS_CACHED,"true");
+        editor.commit();
+        Toast.makeText(this, "Stopped", Toast.LENGTH_LONG).show();
+    }
+
+    /*@Override
+    protected void onRestart() {
+        sharedPreferences=getSharedPreferences(KeyValue.MY_PREF,MODE_PRIVATE);
+        String stored=sharedPreferences.getString(KeyValue.IS_CACHED,"");
+        Toast.makeText(this,stored,Toast.LENGTH_LONG).show();
+        super.onRestart();
+    }
+
+    @Override
+    protected void onResume() {
+        sharedPreferences=getSharedPreferences(KeyValue.MY_PREF,MODE_PRIVATE);
+        String stored=sharedPreferences.getString(KeyValue.IS_CACHED,"");
+        Toast.makeText(this,stored,Toast.LENGTH_LONG).show();
+        super.onResume();
+    }*/
 }

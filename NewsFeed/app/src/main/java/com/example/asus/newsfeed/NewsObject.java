@@ -2,11 +2,13 @@ package com.example.asus.newsfeed;
 
 import android.graphics.Bitmap;
 
+import java.io.Serializable;
+
 /**
  * Created by ASUS on 11/14/2017.
  */
 
-public class NewsObject {
+public class NewsObject implements Serializable{
     public String source_id;
     public String source_name;
     public String author;
@@ -14,7 +16,7 @@ public class NewsObject {
     public String description;
     public String url;
     public String urltoimage;
-    public Bitmap bitmap;
+    public transient Bitmap bitmap;
     public String publishedat;
 
     public NewsObject(String source_id,String source_name, String author, String title, String description, String url, String urltoimage, String publishedAt, Bitmap bitmap) {
