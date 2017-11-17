@@ -63,34 +63,25 @@ public class Utils {
         ArrayList<Sources> sourcesArrayList=new ArrayList<>();
         try {
             JSONObject jsonObject=new JSONObject(jsonResponse);
-            JSONArray jsonArray=jsonObject.getJSONArray("sources");
-            Log.d("length",Integer.toString(jsonArray.length()));
-            for (int i=0;i<jsonArray.length();++i){
-                JSONObject source=jsonArray.getJSONObject(i);
-                try {
-                    String id=source.getString("id");
-                    String name=source.getString("name");
-                    String description=source.getString("description");
-                    String url=source.getString("url");
-                    String category=source.getString("category");
-                    String language=source.getString("language");
-                    String country=source.getString("country");
-                    /*try{
-                        JSONArray sortbysavailable=source.getJSONArray("sortBysAvailable");
-                    }finally {
-
-                    }*/
-                    ArrayList<String> sortBysAvailable=new ArrayList<>();
-                    sortBysAvailable.add("Ignored Part");
-                   // for (int j=0;j<sortbysavailable.length();++j){
-                   //     sortBysAvailable.add(sortbysavailable.getString(j));
-                   // }
-                    sourcesArrayList.add(new Sources(id,name,description,url,category,language,country,sortBysAvailable));
-                }catch (JSONException e){
-                    e.printStackTrace();
-                }
-                //ArrayList<String> sortbys=new ArrayList<>();
-                //sourcesArrayList.add(new Sources("1","1","1","1","1","1","1",sortbys));
+            String status=jsonObject.getString("status");
+            if(status.equals("ok")) {
+                JSONArray jsonArray = jsonObject.getJSONArray("sources");
+                Log.d("length", Integer.toString(jsonArray.length()));
+                for (int i = 0; i < jsonArray.length(); ++i) {
+                    JSONObject source = jsonArray.getJSONObject(i);
+                    try {
+                        String id = source.getString("id");
+                        String name = source.getString("name");
+                        String description = source.getString("description");
+                        String url = source.getString("url");
+                        String category = source.getString("category");
+                        String language = source.getString("language");
+                        String country = source.getString("country");
+                        sourcesArrayList.add(new Sources(id, name, description, url, category, language, country));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                 }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -107,7 +98,11 @@ public class Utils {
             for (int i=0;i<articles.length();++i){
                 JSONObject news=articles.getJSONObject(i);
                 try {
-                    String source = jsonObject.getString("source");
+
+                        JSONObject sourceObject=news.getJSONObject("source");
+                        String source_id=sourceObject.getString("id");
+                        String source_name=sourceObject.getString("name");
+
                     String author;
                     if (news.getString("author").equals("null")) {
                         author = "NA";
@@ -156,7 +151,7 @@ public class Utils {
                     if (bitmap==null){
                         continue;
                     }
-                    newsObjects.add(new NewsObject(source, author, title, desc, url, urltoimage, publishedat, bitmap));
+                    newsObjects.add(new NewsObject(source_id,source_name, author, title, desc, url, urltoimage, publishedat, bitmap));
                 }finally {
 
                 }
@@ -185,5 +180,72 @@ public class Utils {
         finally {
             return sources;
         }
+    }
+
+    public static String getcountryCode(String country){
+        String countrycode=new String();
+        switch (country){
+            case "INDIA":
+                countrycode="in";
+                break;
+            case "USA":
+                countrycode="us";
+                break;
+            case "UK":
+                countrycode="gb";
+                break;
+            case "ITALY":
+                countrycode="it";
+                break;
+            case "AUSTRALIA":
+                countrycode="au";
+                break;
+            case "ARGENTINA":
+                countrycode="ar";
+                break;
+            case "BRAZIL":
+                countrycode="br";
+                break;
+            case "CANADA":
+                countrycode="ca";
+                break;
+            case "CHINA":
+                countrycode="cn";
+                break;
+            case "GERMANY":
+                countrycode="de";
+                break;
+            case "SPAIN":
+                countrycode="es";
+                break;
+            case "FRANCE":
+                countrycode="fr";
+                break;
+            case "HONG-KONG":
+                countrycode="hk";
+                break;
+            case "IRELAND":
+                countrycode="ie";
+                break;
+            case "ICELAND":
+                countrycode="is";
+                break;
+            case "NETHERLANDS":
+                countrycode="nl";
+                break;
+            case "NORWAY":
+                countrycode="no";
+                break;
+            case "RUSSIA":
+                countrycode="ru";
+                break;
+            case "SOUTH-AFRICA":
+                countrycode="za";
+                break;
+            case "EL-SALVADOR":
+                countrycode="sv";
+                break;
+        }
+        return countrycode;
     }
 }

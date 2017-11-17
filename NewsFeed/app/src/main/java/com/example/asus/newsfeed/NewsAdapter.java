@@ -58,10 +58,11 @@ public class NewsAdapter extends BaseAdapter {
         TextView textView2=(TextView)view.findViewById(R.id.author);
         TextView textView3=(TextView)view.findViewById(R.id.title);
         TextView textView4=(TextView)view.findViewById(R.id.description);
-        //TextView textView5=(TextView)view.findViewById(R.id.url);
+        TextView textView5=(TextView)view.findViewById(R.id.source_name);
         TextView textView7=(TextView)view.findViewById(R.id.published);
         ImageView imageView=(ImageView)view.findViewById(R.id.urltoimage);
-        String source=newsObjects.get(i).getNews_source();
+        String source_name=newsObjects.get(i).getSource_name();
+        //String source_id=newsObjects.get(i).getSource_id();
         String author=newsObjects.get(i).getAuthor();
         String title=newsObjects.get(i).getTitle();
         String desc=newsObjects.get(i).getDescription();
@@ -73,7 +74,7 @@ public class NewsAdapter extends BaseAdapter {
         textView2.setText(author);
         textView3.setText(title);
         textView4.setText(desc);
-        //textView5.setText(url);
+        textView5.setText(source_name);
         textView7.setText(published);
         imageView.setImageBitmap(bitmap);
         return view;

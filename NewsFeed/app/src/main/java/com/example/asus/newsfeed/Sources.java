@@ -14,9 +14,8 @@ public class Sources {
     private String category;
     private String language;
     private String country;
-    private ArrayList<String > sortBysAvailable =new ArrayList<>();
 
-    public Sources(String id, String name, String description, String url, String category, String language, String country, ArrayList<String> sortBysAvailable) {
+    public Sources(String id, String name, String description, String url, String category, String language, String country) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -24,7 +23,6 @@ public class Sources {
         this.category = category;
         this.language = language;
         this.country = country;
-        this.sortBysAvailable = sortBysAvailable;
     }
 
     public String getId() {
@@ -55,7 +53,4 @@ public class Sources {
         return country;
     }
 
-    public ArrayList<String> getSortBysAvailable() {
-        return sortBysAvailable;
-    }
 }

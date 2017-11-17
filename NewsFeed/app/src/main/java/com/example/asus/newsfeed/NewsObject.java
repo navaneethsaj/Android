@@ -7,7 +7,8 @@ import android.graphics.Bitmap;
  */
 
 public class NewsObject {
-    public String news_source;
+    public String source_id;
+    public String source_name;
     public String author;
     public String title;
     public String description;
@@ -16,8 +17,9 @@ public class NewsObject {
     public Bitmap bitmap;
     public String publishedat;
 
-    public NewsObject(String news_source, String author, String title, String description, String url, String urltoimage, String publishedAt, Bitmap bitmap) {
-        this.news_source = news_source;
+    public NewsObject(String source_id,String source_name, String author, String title, String description, String url, String urltoimage, String publishedAt, Bitmap bitmap) {
+        this.source_id = source_id;
+        this.source_name=source_name;
         this.author = author;
         this.title = title;
         this.description = description;
@@ -31,8 +33,12 @@ public class NewsObject {
         return bitmap;
     }
 
-    public String getNews_source() {
-        return news_source;
+    public String getSource_id() {
+        return source_id;
+    }
+
+    public String getSource_name() {
+        return source_name;
     }
 
     public String getAuthor() {

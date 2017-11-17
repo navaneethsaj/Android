@@ -17,14 +17,16 @@ import android.widget.Toast;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class LocalNews extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     TextView textView;
+    StringBuilder stringBuilder=new StringBuilder();
     ProgressBar progressBar;
     SwipeRefreshLayout swipeRefreshLayout;
-    public static String worldurl="https://newsapi.org/v1/articles?sortBy=top&apiKey=cb10a5ef6811467e9ab60e72210ec3cc";
+    public static String worldurl="https://newsapi.org/v2/top-headlines?apiKey=cb10a5ef6811467e9ab60e72210ec3cc";
     ArrayList<NewsObject> newslist=new ArrayList<>();
     ListView listView;
     Random random=new Random();
@@ -43,33 +45,17 @@ public class LocalNews extends AppCompatActivity {
         sharedPreferences=getSharedPreferences(KeyValue.MY_PREF,MODE_PRIVATE);
         String jsonsourcelist=sharedPreferences.getString(KeyValue.SOURCE_JSONRESPONSE,"");
         String country=sharedPreferences.getString(KeyValue.MY_COUNTRY,"");
-        String countrycode="";
-        switch (country){
-            case "INDIA":
-                countrycode="in";
-                break;
-            case "USA":
-                countrycode="us";
-                break;
-            case "UK":
-                countrycode="gb";
-                break;
-            case "ITALY":
-                countrycode="it";
-                break;
-            case "AUSTRALIA":
-                countrycode="au";
-                break;
-        }
-        //StringBuilder stringBuilder=new StringBuilder();
+        String countrycode=Utils.getcountryCode(country);
+        stringBuilder.append("&sources=");
         sourcelist=Utils.getNewsSourceOfCountry(countrycode,jsonsourcelist);
-        /*for (int i=0;i<sourcelist.size();++i){
+        for (int i=0;i<sourcelist.size() && i<5;++i){ /// There is some limit to the no of sources
             stringBuilder.append(sourcelist.get(i).toString());
+            stringBuilder.append(",");
         }
-        */
+        stringBuilder.deleteCharAt(stringBuilder.length()-1);
         index=random.nextInt(sourcelist.size());
         getSourcesAsyncTask asyncTask=new getSourcesAsyncTask();
-        asyncTask.execute(worldurl+"&source="+sourcelist.get(index).toString());
+        asyncTask.execute(worldurl+stringBuilder.toString());
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
@@ -83,28 +69,16 @@ public class LocalNews extends AppCompatActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (index==sourcelist.size()-1){
-                    index=0;
-                }
-                else {
-                    index++;
-                }
                 getSourcesAsyncTask asyncTask=new getSourcesAsyncTask();
-                asyncTask.execute(worldurl+"&source="+sourcelist.get(index).toString());
+                asyncTask.execute(worldurl+stringBuilder.toString());
             }
         });
     }
 
     public void refresh(View view) {
-        if (index==sourcelist.size()-1){
-            index=0;
-        }
-        else {
-            index++;
-        }
         swipeRefreshLayout.setRefreshing(true);
         getSourcesAsyncTask asyncTask=new getSourcesAsyncTask();
-        asyncTask.execute(worldurl+"&source="+sourcelist.get(index).toString());
+        asyncTask.execute(worldurl+stringBuilder.toString());
     }
 
     public void gotomenu(View view) {
@@ -137,6 +111,7 @@ public class LocalNews extends AppCompatActivity {
                 //textView.setText("No Local Content Available");
             } else {
                 Log.d("else : ","OK");
+                Collections.shuffle(newslist);
                 NewsAdapter newsAdapter=new NewsAdapter(getApplicationContext(),newslist);
                 listView.setAdapter(newsAdapter);
                 Log.d("elseend : ","OK");

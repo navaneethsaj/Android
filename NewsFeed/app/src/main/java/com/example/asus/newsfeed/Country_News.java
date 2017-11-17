@@ -34,26 +34,9 @@ public class Country_News extends AppCompatActivity {
         getSourcesAsyncTask sourcesAsyncTask=new getSourcesAsyncTask();
         String url=KeyValue.SOURCES_URL;
         sharedPreferences=getSharedPreferences(KeyValue.MY_PREF,MODE_PRIVATE);
-        String countrycode="";
         String country=sharedPreferences.getString(KeyValue.MY_COUNTRY,"");
-        switch (country){
-            case "INDIA":
-                countrycode="in";
-                break;
-            case "USA":
-                countrycode="us";
-                break;
-            case "UK":
-                countrycode="gb";
-                break;
-            case "ITALY":
-                countrycode="it";
-                break;
-            case "AUSTRALIA":
-                countrycode="au";
-                break;
-        }
-        sourcesAsyncTask.execute(url+"country="+countrycode+"&category=general");
+        String countrycode=Utils.getcountryCode(country);
+        sourcesAsyncTask.execute(url+"&country="+countrycode);
     }
 
 
@@ -84,10 +67,6 @@ public class Country_News extends AppCompatActivity {
             editor.putString(KeyValue.SOURCE_JSONRESPONSE,jsonresponse);
             editor.commit();
             sourcesArrayList = Utils.jsonSourcetoArray(jsonresponse);
-            //ArrayList<String> sortbys=new ArrayList<>();
-            //sortbys.add("added");
-            //sourcesArrayList.add(new Sources("1","1","1","1","1","1","1",sortbys));
-            //Toast.makeText(getApplicationContext(),jsonresponse,Toast.LENGTH_SHORT).show();
             if (sourcesArrayList.size() == 0) {
                 textView.setText("No Local Content Available");
             } else {
