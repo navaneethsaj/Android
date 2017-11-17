@@ -23,6 +23,8 @@ import java.util.Random;
 public class LocalNews extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     TextView textView;
+    String countrycode;
+    String jsonsourcelist;
     StringBuilder stringBuilder=new StringBuilder();
     ProgressBar progressBar;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -43,12 +45,12 @@ public class LocalNews extends AppCompatActivity {
         actionBar.hide();
         swipeRefreshLayout=(SwipeRefreshLayout)findViewById(R.id.swipelayout);
         sharedPreferences=getSharedPreferences(KeyValue.MY_PREF,MODE_PRIVATE);
-        String jsonsourcelist=sharedPreferences.getString(KeyValue.SOURCE_JSONRESPONSE,"");
+        jsonsourcelist=sharedPreferences.getString(KeyValue.SOURCE_JSONRESPONSE,"");
         String country=sharedPreferences.getString(KeyValue.MY_COUNTRY,"");
-        String countrycode=Utils.getcountryCode(country);
+        countrycode=Utils.getcountryCode(country);
         stringBuilder.append("&sources=");
         sourcelist=Utils.getNewsSourceOfCountry(countrycode,jsonsourcelist);
-        for (int i=0;i<sourcelist.size() && i<5;++i){ /// There is some limit to the no of sources
+        for (int i=0;i<2;++i){ // There is some limit to the no of sources
             stringBuilder.append(sourcelist.get(i).toString());
             stringBuilder.append(",");
         }
@@ -69,6 +71,15 @@ public class LocalNews extends AppCompatActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                sourcelist=Utils.getNewsSourceOfCountry(countrycode,jsonsourcelist);
+                stringBuilder=new StringBuilder();
+                stringBuilder.append("&sources=");
+                Collections.shuffle(sourcelist);
+                for (int i=0;i<sourcelist.size() && i<2;++i){ /// There is some limit to the no of sources
+                    stringBuilder.append(sourcelist.get(i).toString());
+                    stringBuilder.append(",");
+                }
+                stringBuilder.deleteCharAt(stringBuilder.length()-1);
                 getSourcesAsyncTask asyncTask=new getSourcesAsyncTask();
                 asyncTask.execute(worldurl+stringBuilder.toString());
             }
@@ -77,6 +88,14 @@ public class LocalNews extends AppCompatActivity {
 
     public void refresh(View view) {
         swipeRefreshLayout.setRefreshing(true);
+        sourcelist=Utils.getNewsSourceOfCountry(countrycode,jsonsourcelist);
+        stringBuilder=new StringBuilder();
+        stringBuilder.append("&sources=");
+        Collections.shuffle(sourcelist);
+        for (int i=0;i<sourcelist.size() && i<2;++i){ /// There is some limit to the no of sources
+            stringBuilder.append(sourcelist.get(i).toString());
+            stringBuilder.append(",");
+        }
         getSourcesAsyncTask asyncTask=new getSourcesAsyncTask();
         asyncTask.execute(worldurl+stringBuilder.toString());
     }
