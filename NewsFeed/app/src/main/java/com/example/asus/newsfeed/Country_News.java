@@ -84,6 +84,10 @@ public class Country_News extends AppCompatActivity {
             editor.putString(KeyValue.SOURCE_JSONRESPONSE,jsonresponse);
             editor.commit();
             sourcesArrayList = Utils.jsonSourcetoArray(jsonresponse);
+            //ArrayList<String> sortbys=new ArrayList<>();
+            //sortbys.add("added");
+            //sourcesArrayList.add(new Sources("1","1","1","1","1","1","1",sortbys));
+            //Toast.makeText(getApplicationContext(),jsonresponse,Toast.LENGTH_SHORT).show();
             if (sourcesArrayList.size() == 0) {
                 textView.setText("No Local Content Available");
             } else {
@@ -94,5 +98,4 @@ public class Country_News extends AppCompatActivity {
             Log.d("Onpostexecute "," End");
         }
     }
-
 }

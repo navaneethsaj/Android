@@ -29,6 +29,5 @@
         android:onClick="localnews"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
         android:textAllCaps="false"
-        android:padding="25dp"
-        />
+        android:padding="25dp" />
 </LinearLayout>

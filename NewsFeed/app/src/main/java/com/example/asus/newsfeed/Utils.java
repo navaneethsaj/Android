@@ -75,11 +75,16 @@ public class Utils {
                     String category=source.getString("category");
                     String language=source.getString("language");
                     String country=source.getString("country");
-                    JSONArray sortbysavailable=source.getJSONArray("sortBysAvailable");
+                    /*try{
+                        JSONArray sortbysavailable=source.getJSONArray("sortBysAvailable");
+                    }finally {
+
+                    }*/
                     ArrayList<String> sortBysAvailable=new ArrayList<>();
-                    for (int j=0;j<sortbysavailable.length();++j){
-                        sortBysAvailable.add(sortbysavailable.getString(j));
-                    }
+                    sortBysAvailable.add("Ignored Part");
+                   // for (int j=0;j<sortbysavailable.length();++j){
+                   //     sortBysAvailable.add(sortbysavailable.getString(j));
+                   // }
                     sourcesArrayList.add(new Sources(id,name,description,url,category,language,country,sortBysAvailable));
                 }catch (JSONException e){
                     e.printStackTrace();
