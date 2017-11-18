@@ -165,7 +165,7 @@ public class LocalNews extends AppCompatActivity {
         stringBuilder=new StringBuilder();
         stringBuilder.append("&sources=");
         Collections.shuffle(sourcelist);
-        for (int i=0;i<sourcelist.size() && i<2;++i){ /// There is some limit to the no of sources
+        for (int i=0;i<sourcelist.size() && i<3;++i){ /// There is some limit to the no of sources
             stringBuilder.append(sourcelist.get(i).toString());
             stringBuilder.append(",");
         }
@@ -182,6 +182,8 @@ public class LocalNews extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
+            refeshbutton.setClickable(false);
+            searchView.setSubmitButtonEnabled(false);
             Toast.makeText(getApplicationContext(),"Async started",Toast.LENGTH_SHORT).show();
         }
 
@@ -196,6 +198,8 @@ public class LocalNews extends AppCompatActivity {
         @Override
         protected void onPostExecute(ArrayList<NewsObject> newslist) {
             swipeRefreshLayout.setRefreshing(false);
+            searchView.setSubmitButtonEnabled(true);
+            refeshbutton.setClickable(true);
             //Toast.makeText(getApplicationContext(),jsonresponse,Toast.LENGTH_SHORT).show();
             Log.d("Onpostexecute : ","OK");
             progressBar.setVisibility(View.GONE);
