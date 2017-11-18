@@ -33,6 +33,7 @@ public class Country_News extends AppCompatActivity {
         actionBar.hide();
         listView=(ListView)findViewById(R.id.listview);
         textView=(TextView)findViewById(R.id.availablity);
+        button=(Button)findViewById(R.id.button);
         swipeRefreshLayout=(SwipeRefreshLayout)findViewById(R.id.countryswipe);
         getSourcesAsyncTask sourcesAsyncTask=new getSourcesAsyncTask();
         String url=KeyValue.SOURCES_URL;
@@ -53,6 +54,8 @@ public class Country_News extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
+            button.setText("Wait..");
+            button.setEnabled(false);
             swipeRefreshLayout.setRefreshing(true);
             Toast.makeText(getApplicationContext(),"Async started",Toast.LENGTH_SHORT).show();
         }
@@ -67,6 +70,8 @@ public class Country_News extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String jsonresponse) {
+            button.setEnabled(true);
+            button.setText("Go");
             editor=sharedPreferences.edit();
             swipeRefreshLayout.setRefreshing(false);
             editor.putString(KeyValue.SOURCE_JSONRESPONSE,jsonresponse);
