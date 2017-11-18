@@ -3,6 +3,7 @@ package com.example.asus.newsfeed;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ public class Country_News extends AppCompatActivity {
     ListView listView;
     TextView textView;
     Button button;
+    SwipeRefreshLayout swipeRefreshLayout;
     SharedPreferences.Editor editor;
     SharedPreferences sharedPreferences;
     @Override
@@ -31,6 +33,7 @@ public class Country_News extends AppCompatActivity {
         actionBar.hide();
         listView=(ListView)findViewById(R.id.listview);
         textView=(TextView)findViewById(R.id.availablity);
+        swipeRefreshLayout=(SwipeRefreshLayout)findViewById(R.id.countryswipe);
         getSourcesAsyncTask sourcesAsyncTask=new getSourcesAsyncTask();
         String url=KeyValue.SOURCES_URL;
         sharedPreferences=getSharedPreferences(KeyValue.MY_PREF,MODE_PRIVATE);
@@ -50,6 +53,7 @@ public class Country_News extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
+            swipeRefreshLayout.setRefreshing(true);
             Toast.makeText(getApplicationContext(),"Async started",Toast.LENGTH_SHORT).show();
         }
 
@@ -64,6 +68,7 @@ public class Country_News extends AppCompatActivity {
         @Override
         protected void onPostExecute(String jsonresponse) {
             editor=sharedPreferences.edit();
+            swipeRefreshLayout.setRefreshing(false);
             editor.putString(KeyValue.SOURCE_JSONRESPONSE,jsonresponse);
             editor.commit();
             sourcesArrayList = Utils.jsonSourcetoArray(jsonresponse);

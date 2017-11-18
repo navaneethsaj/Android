@@ -4,36 +4,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
+    android:background="@color/gray"
     android:orientation="vertical"
     tools:context="com.example.asus.newsfeed.Country_selector">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Choose Your Country"
+        android:background="@color/darkgray"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:gravity="center"
         android:layout_weight="1"/>
     <LinearLayout
+        android:paddingHorizontal="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:onClick="india"
         android:layout_weight="1">
+
         <ImageView
             android:layout_width="200dp"
             android:layout_height="100dp"
             android:layout_weight="1"
-            android:src="@drawable/indiaflag"/>
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/indiaflag" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="center_vertical"
             android:gravity="center"
             android:layout_weight="1"
             android:text="INDIA"/>
     </LinearLayout>
     <LinearLayout
+        android:paddingHorizontal="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="usa"
@@ -43,16 +48,18 @@
             android:layout_height="100dp"
             android:layout_weight="1"
             android:padding="5dp"
+            android:layout_gravity="center_vertical"
             android:src="@drawable/usaflag"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="center_vertical"
             android:gravity="center"
             android:layout_weight="1"
             android:text="USA"/>
     </LinearLayout>
     <LinearLayout
+        android:paddingHorizontal="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -61,17 +68,19 @@
             android:layout_width="200dp"
             android:layout_height="100dp"
             android:layout_weight="1"
+            android:layout_gravity="center_vertical"
             android:padding="5dp"
             android:src="@drawable/austrailiaflag"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="center_vertical"
             android:gravity="center"
             android:layout_weight="1"
             android:text="AUSTRAILIA"/>
     </LinearLayout>
     <LinearLayout
+        android:paddingHorizontal="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -80,12 +89,13 @@
             android:layout_width="200dp"
             android:layout_height="100dp"
             android:layout_weight="1"
+            android:layout_gravity="center_vertical"
             android:padding="5dp"
             android:src="@drawable/ukflag"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="center_vertical"
             android:gravity="center"
             android:layout_weight="1"
             android:text="UNITED KINGDOM"/>

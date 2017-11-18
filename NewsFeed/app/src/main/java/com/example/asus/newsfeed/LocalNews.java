@@ -165,7 +165,7 @@ public class LocalNews extends AppCompatActivity {
         stringBuilder=new StringBuilder();
         stringBuilder.append("&sources=");
         Collections.shuffle(sourcelist);
-        for (int i=0;i<sourcelist.size() && i<3;++i){ /// There is some limit to the no of sources
+        for (int i=0;i<sourcelist.size() && i<2;++i){ /// There is some limit to the no of sources
             stringBuilder.append(sourcelist.get(i).toString());
             stringBuilder.append(",");
         }
@@ -182,6 +182,11 @@ public class LocalNews extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
+            RotateAnimation anim = new RotateAnimation(0.0f, 360.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            anim.setInterpolator(new LinearInterpolator());
+            anim.setRepeatCount(Animation.INFINITE);
+            anim.setDuration(700);
+            refeshbutton.startAnimation(anim);
             refeshbutton.setClickable(false);
             searchView.setSubmitButtonEnabled(false);
             Toast.makeText(getApplicationContext(),"Async started",Toast.LENGTH_SHORT).show();
