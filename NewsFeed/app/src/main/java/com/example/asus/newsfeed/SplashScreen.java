@@ -26,6 +26,9 @@ public class SplashScreen extends AppCompatActivity {
                 public void run() {
                     if (sharedPreferences.getString(KeyValue.REGION, "").equals("")) {
                         Intent intent = new Intent(getApplicationContext(), Country_selector.class);
+                        SharedPreferences.Editor editor=sharedPreferences.edit();
+                        editor.putString(KeyValue.REGION,"local");
+                        editor.commit();
                         startActivity(intent);
                     } else if (sharedPreferences.getString(KeyValue.REGION, "").equals("local") == true) {
                         if (sharedPreferences.getString(KeyValue.MY_COUNTRY,"").equals("")){
@@ -42,7 +45,7 @@ public class SplashScreen extends AppCompatActivity {
                         startActivity(intent);
                     }
                 }
-            }, 2000);
+            }, 1200);
         }
         else {
             Toast.makeText(this,"Check internet connection",Toast.LENGTH_SHORT).show();

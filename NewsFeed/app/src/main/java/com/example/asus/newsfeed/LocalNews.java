@@ -64,7 +64,7 @@ public class LocalNews extends AppCompatActivity {
         actionBar.hide();
         swipeRefreshLayout=(SwipeRefreshLayout)findViewById(R.id.swipelayout);
         if (sharedPreferences.getString(KeyValue.IS_CACHED,"").equals("true")){
-            Toast.makeText(this,"true_entered",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,"true_entered",Toast.LENGTH_SHORT).show();
             try {
                 Log.d("try start", " ok");
                 FileInputStream fileInputStream=new FileInputStream(new File(getApplicationContext().getFilesDir(),"cache.txt"));
@@ -189,7 +189,7 @@ public class LocalNews extends AppCompatActivity {
             refeshbutton.startAnimation(anim);
             refeshbutton.setClickable(false);
             searchView.setSubmitButtonEnabled(false);
-            Toast.makeText(getApplicationContext(),"Async started",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(),"Async started",Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -243,22 +243,14 @@ public class LocalNews extends AppCompatActivity {
         SharedPreferences.Editor editor=sharedPreferences.edit();
         editor.putString(KeyValue.IS_CACHED,"true");
         editor.commit();
-        Toast.makeText(this, "Stopped", Toast.LENGTH_LONG).show();
-    }
-
-    /*@Override
-    protected void onRestart() {
-        sharedPreferences=getSharedPreferences(KeyValue.MY_PREF,MODE_PRIVATE);
-        String stored=sharedPreferences.getString(KeyValue.IS_CACHED,"");
-        Toast.makeText(this,stored,Toast.LENGTH_LONG).show();
-        super.onRestart();
+        //Toast.makeText(this, "Stopped", Toast.LENGTH_LONG).show();
     }
 
     @Override
-    protected void onResume() {
-        sharedPreferences=getSharedPreferences(KeyValue.MY_PREF,MODE_PRIVATE);
-        String stored=sharedPreferences.getString(KeyValue.IS_CACHED,"");
-        Toast.makeText(this,stored,Toast.LENGTH_LONG).show();
-        super.onResume();
-    }*/
+    public void onBackPressed(){
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
+    }
 }

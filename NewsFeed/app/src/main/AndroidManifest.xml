@@ -45,8 +45,11 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".MenuActivity"
-            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".MenuActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Credits"
+            android:screenOrientation="portrait" ></activity>
     </application>
 
 </manifest>

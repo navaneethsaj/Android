@@ -57,7 +57,7 @@ public class Country_News extends AppCompatActivity {
             button.setText("Wait..");
             button.setEnabled(false);
             swipeRefreshLayout.setRefreshing(true);
-            Toast.makeText(getApplicationContext(),"Async started",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(),"Async started",Toast.LENGTH_SHORT).show();
         }
 
         @Override

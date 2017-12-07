@@ -46,4 +46,9 @@ public class MenuActivity extends AppCompatActivity {
         Intent intent=new Intent(getApplicationContext(),Country_selector.class);
         startActivity(intent);
     }
+
+    public void gotocredits(View view) {
+        Intent intent=new Intent(this,Credits.class);
+        startActivity(intent);
+    }
 }
