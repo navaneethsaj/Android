@@ -7,6 +7,14 @@
     android:orientation="vertical"
     android:background="@color/darkgray"
     tools:context="com.example.asus.newsfeed.LocalNews">
+    <com.tappx.sdk.android.TappxBanner
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/tappx_banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:txAppKey="/120940746/Pub-27362-Android-7336"
+        />
     <RelativeLayout
         android:background="@color/darkgray"
         android:layout_width="match_parent"

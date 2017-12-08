@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
@@ -20,6 +21,8 @@ import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.tappx.sdk.android.TappxBanner;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -49,12 +52,20 @@ public class LocalNews extends AppCompatActivity {
     ListView listView;
     Random random=new Random();
     int index;
+    ViewGroup bannerContainer;
+    TappxBanner banner;
     ArrayList<String> sourcelist=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_local_news);
         sharedPreferences=getSharedPreferences(KeyValue.MY_PREF,MODE_PRIVATE);
+        bannerContainer = (ViewGroup) findViewById(R.id.tappx_banner);
+        Context context = this;
+        banner = new TappxBanner(context, "/120940746/Pub-27362-Android-7336");        //Create the banner
+        banner.setAdSize(TappxBanner.AdSize.SMART_BANNER);
+        bannerContainer.addView(banner);                              //add the banner to the view
+        banner.loadAd();                                                                      //request a new ad
         progressBar=(ProgressBar)findViewById(R.id.loading);
         refeshbutton=(ImageView)findViewById(R.id.refresh);
         textView=(TextView)findViewById(R.id.text);
@@ -252,5 +263,11 @@ public class LocalNews extends AppCompatActivity {
         a.addCategory(Intent.CATEGORY_HOME);
         a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(a);
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (banner != null)
+            banner.destroy();
     }
 }
