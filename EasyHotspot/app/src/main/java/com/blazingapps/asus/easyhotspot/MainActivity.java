@@ -1,7 +1,9 @@
 package com.blazingapps.asus.easyhotspot;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
@@ -10,89 +12,42 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.lang.reflect.Method;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    Boolean turnon = true;
-    TextView sharingtext;
-    ImageView onoff,wirelessImg,facebook,instagram,twitter,playstore,aboutme;
+    private static final String MYPREF = "myref";
+    private static final String COUNT = "count";
+    private static final String NOTRATED = "okay";
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        facebook = findViewById(R.id.facebook);
-        instagram = findViewById(R.id.instagram);
-        twitter = findViewById(R.id.twitter);
-        playstore = findViewById(R.id.playstore);
-        onoff = findViewById(R.id.onoffbutton);
-        wirelessImg = findViewById(R.id.wirelessimage);
-        sharingtext = findViewById(R.id.sharingtext);
-        aboutme = findViewById(R.id.aboutme);
-
-        turnOnOffHotspot(this,turnon);
-
-        facebook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent facebookIntent = new Intent(Intent.ACTION_VIEW);
-                String facebookUrl = getFacebookPageURL(getApplicationContext());
-                facebookIntent.setData(Uri.parse(facebookUrl));
-                startActivity(facebookIntent);
-            }
-        });
-        twitter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = getOpenTwitterIntent(getApplicationContext(), "navaneethkz");
-                startActivity(i);
-            }
-        });
-        instagram.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Uri uri = Uri.parse("https://www.instagram.com/navaneethkz/");
-                Intent insta = new Intent(Intent.ACTION_VIEW, uri);
-                insta.setPackage("com.instagram.android");
-
-                if (isIntentAvailable(getApplicationContext(), insta)){
-                    startActivity(insta);
-                } else{
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://instagram.com/xxx")));
-                }
-            }
-        });
-        playstore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                } catch (android.content.ActivityNotFoundException anfe) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                }
-            }
-        });
-        onoff.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                turnOnOffHotspot(getApplicationContext(),turnon);
-            }
-        });
-        aboutme.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),About.class);
-                startActivity(intent);
-            }
-        });
+        sharedPreferences=getSharedPreferences(MYPREF,MODE_PRIVATE);
+        editor=sharedPreferences.edit();
+        editor.putInt(COUNT,sharedPreferences.getInt(COUNT,0)+1);
+        editor.commit();
+        turnOnOffHotspot(this);
+        if (sharedPreferences.getInt(COUNT,0) > 20 && sharedPreferences.getBoolean(NOTRATED,true)){
+            launchMarket();
+            Toast.makeText(getApplicationContext(),"You Seems to Enjoy Easy Hotspot\nPlease Rate Us in Playstore",Toast.LENGTH_LONG).show();
+            editor.putBoolean(NOTRATED,false);
+            editor.commit();
+        }
+        finish();
     }
-    public void turnOnOffHotspot(Context context, boolean isTurnToOn) {
+    public void turnOnOffHotspot(Context context) {
         WifiManager wifiManager = (WifiManager) context
                 .getSystemService(Context.WIFI_SERVICE);
 
+        boolean isTurnToOn = !isSharingWiFi(wifiManager);
         WifiApControl apControl = WifiApControl.getApControl(wifiManager);
         if (apControl != null) {
 
@@ -108,17 +63,10 @@ public class MainActivity extends AppCompatActivity {
                     isTurnToOn);
             if (bool){
                 Log.d("operation result","hotspot okay");
-                turnon = !turnon;
-                if (turnon){
+                if (!isTurnToOn){
                     Toast.makeText(getApplicationContext(),"Hotspot Stopped",Toast.LENGTH_LONG).show();
-                    onoff.setImageResource(R.drawable.turnoff);
-                    wirelessImg.setImageResource(R.drawable.wirelessoff);
-                    sharingtext.setText("Not Sharing Network !");
                 }else {
                     Toast.makeText(getApplicationContext(),"Hotspot Started",Toast.LENGTH_LONG).show();
-                    onoff.setImageResource(R.drawable.turnon);
-                    wirelessImg.setImageResource(R.drawable.wirelesson);
-                    sharingtext.setText("Sharing Network Connection !");
                 }
             }else {
                 Log.d("operation result","failed to turn on hotspot");
@@ -127,37 +75,27 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static String FACEBOOK_URL = "https://www.facebook.com/Navaneeth.Melur";
-    public static String FACEBOOK_PAGE_ID = "Navaneeth.Melur";
-
-    //method to get the right URL to use in the intent
-    public String getFacebookPageURL(Context context) {
-        PackageManager packageManager = context.getPackageManager();
-        try {
-            int versionCode = packageManager.getPackageInfo("com.facebook.katana", 0).versionCode;
-            if (versionCode >= 3002850) { //newer versions of fb app
-                return "fb://facewebmodal/f?href=" + FACEBOOK_URL;
-            } else { //older versions of fb app
-                return "fb://page/" + FACEBOOK_PAGE_ID;
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            return FACEBOOK_URL; //normal web url
+    public static boolean isSharingWiFi(final WifiManager manager)
+    {
+        try
+        {
+            final Method method = manager.getClass().getDeclaredMethod("isWifiApEnabled");
+            method.setAccessible(true); //in the case of visibility change in future APIs
+            return (Boolean) method.invoke(manager);
         }
-    }
-
-    public static Intent getOpenTwitterIntent(Context c, String Username) {
-
-        try {
-            c.getPackageManager().getPackageInfo("com.twitter.android", 0);
-            return new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?screen_name="+ Username));
-        } catch (Exception e) {
-            return new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/#!/" + Username));
+        catch (final Throwable ignored)
+        {
         }
-    }
 
-    private boolean isIntentAvailable(Context ctx, Intent intent) {
-        final PackageManager packageManager = ctx.getPackageManager();
-        List<ResolveInfo> list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-        return list.size() > 0;
+        return false;
+    }
+    private void launchMarket() {
+        Uri uri = Uri.parse("market://details?id=" + getPackageName());
+        Intent myAppLinkToMarket = new Intent(Intent.ACTION_VIEW, uri);
+        try {
+            startActivity(myAppLinkToMarket);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(this, " unable to find market app", Toast.LENGTH_LONG).show();
+        }
     }
 }
