@@ -109,8 +109,14 @@ public class MainActivity extends AppCompatActivity {
 
         WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         WifiConfiguration wifiConfiguration = new WifiConfiguration();
-        //wifiConfiguration.SSID = "EasyHotspot";
-        //wifiConfiguration.preSharedKey="123456789";
+
+        wifiConfiguration.SSID = "EasyHotspot";
+        wifiConfiguration.preSharedKey="123456789";
+        wifiConfiguration.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.SHARED);
+        wifiConfiguration.allowedProtocols.set(WifiConfiguration.Protocol.RSN);
+        wifiConfiguration.allowedProtocols.set(WifiConfiguration.Protocol.WPA);
+        wifiConfiguration.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
+
 
         Method method;
         if (wifiManager.isWifiEnabled()){
@@ -121,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
             method = wifiManager.getClass().getDeclaredMethod("setWifiApEnabled", WifiConfiguration.class, Boolean.TYPE);
             method.invoke(wifiManager, wifiConfiguration, action);
             if (action){
-                Toast.makeText(getApplicationContext(),"Hotspot Started",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"Password : 123456789",Toast.LENGTH_LONG).show();
                 Bundle bundle = new Bundle();
                 bundle.putString(APP_OPEN, "Hotspot Started");
 
