@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "457999746194",
+    "firebase_url": "https://easyhotspot-8dc63.firebaseio.com",
+    "project_id": "easyhotspot-8dc63",
+    "storage_bucket": "easyhotspot-8dc63.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:457999746194:android:ee7263821c3e03d5",
+        "android_client_info": {
+          "package_name": "com.blazingapps.asus.easyhotspot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "457999746194-stpbovc41ndudtooj3ljd5sishq4h9ku.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.blazingapps.asus.easyhotspot",
+            "certificate_hash": "b7f2dcf8046442d7d287a1f97eaadea8270835e4"
+          }
+        },
+        {
+          "client_id": "457999746194-e8ediqh137477j11hinv5cn9nfb498ud.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwCG_qCOZnXjkEaCRu4IzZ-k4v-fYUmI0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "457999746194-e8ediqh137477j11hinv5cn9nfb498ud.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
